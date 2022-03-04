@@ -8,7 +8,7 @@
             <h5>{{ product.product_name }}</h5>
             <p>{{ product.product_desc }}</p>
             <p>Stock: {{ product.product_stock }}</p>
-            <a href="#" class="btn btn-primary">Buy</a>
+            <a href="/shop/{{ product.product_name }}/remove" class="btn btn-primary">Buy</a>
         </div>
     </div>
 {% endblock %}

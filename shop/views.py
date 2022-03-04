@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_list_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from .models import Product
 
@@ -17,7 +19,7 @@ def index(request):
 
     products = list(Product.objects.all())
     if not len(products):
-        product = Product(product_name='Name1', product_desc='Desc1', product_stock=1)
+        product = Product(product_name='Product 1', product_desc='This is a product', product_stock=3)
         product.save()
         products.append(product)
     context = {
@@ -30,3 +32,19 @@ def index(request):
 def detail(request, name):
     product = get_list_or_404(Product, product_name=name)
     return render(request, 'shop/detail.html', {'product': product[0]})
+
+
+def remove(request, name):
+    product_list = get_list_or_404(Product, product_name=name)
+    product = product_list[0]
+    product.product_stock = product.product_stock - 1
+    if not product.product_stock:
+        product.delete()
+    else:
+        product.save(force_update=True)
+    products = list(Product.objects.all())
+    context = {
+        'products': products,
+    }
+
+    return HttpResponseRedirect(reverse('shop:index', args=context))
