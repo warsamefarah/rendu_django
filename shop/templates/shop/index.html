@@ -1,0 +1,35 @@
+{% extends "shop/base.html" %}
+
+{% load static %}
+
+{% block page_content %}
+    <div class="card-container">
+        {% for product in  products %}
+                <div class="card" style="width: 18rem">
+                        <div class="card-body">
+                            <a href="/shop/{{ product.product_name }}/detail">
+                                <h5>{{ product.product_name }}</h5>
+                            </a>
+                            <p>{{ product.product_desc }}</p>
+                            <p>Stock: {{ product.product_stock }}</p>
+                            <a href="#" class="btn btn-primary">Buy</a>
+                        </div>
+                </div>
+
+        {% endfor %}
+    </div>
+
+
+
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+            <h2>New Product</h2>
+        <label for="Name">Product Name</label>
+        <input type="text" name="Name" placeholder="Product Name" id="Name">
+        <label for="Desc">Product Description</label>
+        <textarea placeholder="Product Description" name="Desc" rows="3" cols="50" id="Desc"></textarea>
+        <label for="Stock">Stock available</label>
+        <input type="number" min="1" max="10" name="Stock" id="Stock">
+        <input type="submit">
+    </form>
+{% endblock %}
