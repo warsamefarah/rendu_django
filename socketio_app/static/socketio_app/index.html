@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Django + SocketIO Test</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            var socket = io.connect();
+
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'Je suis en ligne !'});
+            });
+            socket.on('my_event', function({data}){
+                $('#messages').append(`<p>Moi: ${data}</p>`);
+                $('#messages').append('<p>Robot: Je ne peux pas parler (je suis un robot)</p>');
+            })
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            // handlers for the different forms in the page
+            // these send data to the server in a variety of ways
+            $('form#emit').submit(function(event) {
+                socket.emit('my_event', {data: $('#emit_data').val()});
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Chat</h1>
+    <h2>Tapez votre message:</h2>
+    <form id="emit" method="POST" action='#'>
+        <input type="text" name="emit_data" id="emit_data" placeholder="Message">
+        <input type="submit" value="Envoyer">
+    </form>
+    <div id="messages"></div>
+</body>
+</html>
